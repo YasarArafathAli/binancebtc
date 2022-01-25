@@ -38,7 +38,6 @@ export default function App() {
 
   return (
     <div className="App">
-   
       <button
         onClick={handleClickSendMessage}
         disabled={readyState !== ReadyState.OPEN}
