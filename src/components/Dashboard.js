@@ -1,40 +1,32 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import {Line} from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-  } from 'chart.js';
 
-function Dashboard(props) {
+function Dashboard({message}) {
 
-    const data = {"e":"trade","E":1643135979291,"s":"BTCUSDT","t":1235805672,"p":"37396.04000000","q":"0.09252000","b":9140832801,"a":9140832790,"T":1643135979291,"m":false,"M":true}
+    const [chartdata,setChartData] = useState([])
     
-    const chartdata = {
-        time: data.T,
-        price: data.p,
-        quantity: data.q
+    const updateData = () => {
+        if(message){
+            const newdata = {
+            time:  message.T,
+            price: message.p,
+            quantity: message.q
+        }
+        console.log(newdata)
+        setChartData([...chartdata, newdata])
     }
-    const options = {
-        responsive: true,   
-        plugins: {
-          legend: {
-            position: 'top'
-          },
-          title: {
-            display: true,
-            text: 'Chart.js Line Chart',
-          },
-        },
-      };
+}
+    
+    useEffect(() => {
+
+        setTimeout(()=>{
+         updateData()
+        }, 1000)
+    
+      }, [chartdata])
   return <div>
-  
-  {JSON.stringify(props.message&& props.message.T)}
+  {JSON.stringify(message)} <br/>
+  {JSON.stringify(chartdata)}
   </div>
 }
 

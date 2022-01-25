@@ -54,18 +54,10 @@ export default function App() {
       <br />
       {lastJsonMessage ? (
         <span>
-          Last message: {JSON.stringify(lastJsonMessage.data, null, 4)}
+           
+           <Dashboard message = {lastJsonMessage.data}/>
         </span>
       ) : null}
-    <ul>
-      {messageHistory.current.map((message, index) => {
-
-        const test= message.data;
-          return (<div key={index}>
-          <Dashboard message ={message.data} />
-          </div>)
-      })}
-      </ul>
     </div>
   );
 }
