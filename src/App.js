@@ -34,18 +34,11 @@ export default function App() {
     [sendJsonMessage]
   );
 
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: "Connecting",
-    [ReadyState.OPEN]: "Open",
-    [ReadyState.CLOSING]: "Closing",
-    [ReadyState.CLOSED]: "Closed",
-    [ReadyState.UNINSTANTIATED]: "Uninstantiated"
-  }[readyState];
+
 
   return (
     <div className="App">
-
-    <Dashboard/>
+   
       <button
         onClick={handleClickSendMessage}
         disabled={readyState !== ReadyState.OPEN}
@@ -58,18 +51,20 @@ export default function App() {
       >
         Unsubscribe
       </button>
-      <span>The WebSocket is currently {connectionStatus}</span>
+      <br />
       {lastJsonMessage ? (
         <span>
           Last message: {JSON.stringify(lastJsonMessage.data, null, 4)}
         </span>
       ) : null}
-      <ul>
-        {messageHistory.current.map((message, idx) => (
-      <div key={idx}>
-          <Dashboard data={message.data!== null ? message: null} />
-      </div>
-        ))}
+    <ul>
+      {messageHistory.current.map((message, index) => {
+
+        const test= message.data;
+          return (<div key={index}>
+          <Dashboard message ={message.data} />
+          </div>)
+      })}
       </ul>
     </div>
   );
