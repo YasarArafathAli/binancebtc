@@ -17,16 +17,15 @@ function Dashboard({message,type}) {
         }
 
         setChartData(currentdata => [...updata, newdata])
-        console.log(chartdata)
     }
 }
- const format = (unixTime) => moment(unixTime).format('HH:mm')
+ const format = (unixTime) => moment(unixTime).format('HH:mm:ss a')
     
     useEffect(() => {
 
         setTimeout(()=>{
          updateData();
-        }, 1000)
+        }, 500)
     
       })
   return <div>
@@ -36,7 +35,7 @@ function Dashboard({message,type}) {
     <YAxis tickCount={22} domain={type === "price" ? ['dataMin - 100', 'dataMax + 200'] : [0, 'dataMax + 0.01']}/>
     {type === "price" ? 
     (<Line type="monotone" dataKey="price" stroke="#8884d8" />)
-    : (<Bar type="monotone" barSize={20} dataKey="quantity" stroke="#8884d8" />)
+    : (<Bar type="monotone" barSize={8} dataKey="quantity" stroke="#8884d8" />)
     }
       
   </ComposedChart>

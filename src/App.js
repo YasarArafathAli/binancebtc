@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Dashboard from "./components/Dashboard";
 export default function App() {
@@ -6,6 +6,7 @@ export default function App() {
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     socketUrl
   );
+  const [lastMessage, setLastMessage] = useState({})
   const [type, setType] = useState("price")
   const messageHistory = useRef([]);  
 
@@ -34,6 +35,15 @@ export default function App() {
     [sendJsonMessage]
   );
 
+  const updateMessage = useCallback(() =>{
+    setTimeout(()=>{
+      setLastMessage(lastJsonMessage);
+    }, 500)
+  },[lastJsonMessage])
+
+  useEffect(() => {
+    updateMessage();
+  }, [updateMessage,lastMessage])
   
   return (
     <div className="App">
@@ -56,9 +66,9 @@ export default function App() {
         </select>
       </span>
       <br />
-      {lastJsonMessage ? (
+      {lastMessage ? (
         <span>
-           <Dashboard message = {lastJsonMessage.data} type= {type}/>
+           <Dashboard message = {lastMessage.data} type= {type}/>
         </span>
       ) : null}
     </div>
