@@ -41,13 +41,13 @@ export default function App() {
         onClick={handleClickSendMessage}
         disabled={readyState !== ReadyState.OPEN}
       >
-        Subscribe
+        Connect
       </button>
       <button
         onClick={handleClickUnSendMessage}
         disabled={readyState !== ReadyState.OPEN}
       >
-        Unsubscribe
+        Disconnect
       </button>
       <span>
         <select onChange={(e) => setType(e.target.value)} value = {type} >
