@@ -1,40 +1,45 @@
 import React,{useState, useEffect} from 'react';
-import { LineChart, Line , XAxis, YAxis, CartesianGrid } from 'recharts';
-function Dashboard({message}) {
-
-    const [chartdata,setChartData] = useState([])
+import {ComposedChart, Bar, Line , XAxis, YAxis, CartesianGrid } from 'recharts';
+import moment from 'moment';
+function Dashboard({message,type}) {
+    const [chartdata,setChartData] = useState([]);
     
     const updateData = () => {
         if(message){
             const newdata = {
-            time:  message.T,
+            time:  format(message.T),
             price: message.p,
             quantity: message.q
         }
-        setChartData(currentdata => {
-            let arraychange = currentdata;
-            arraychange.shift();
-            return [...arraychange, newdata]})
+        let updata = chartdata;
+        if (chartdata.length >= 15){
+            updata = updata.slice(-chartdata.length/2)
+        }
+
+        setChartData(currentdata => [...updata, newdata])
+        console.log(chartdata)
     }
 }
-//  const format = (unixTime) => moment(unixTime).format('HH:mm')
+ const format = (unixTime) => moment(unixTime).format('HH:mm')
     
     useEffect(() => {
 
         setTimeout(()=>{
-         updateData()
+         updateData();
         }, 1000)
     
       })
   return <div>
-   <LineChart width={500} height={300} data={chartdata} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-    <XAxis dataKey="time"/>
-    <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-    <YAxis tickCount={20}/>
-    <Line type="monotone" dataKey="price" stroke="#8884d8" />
-    <Line type="monotone" dataKey="quantity" stroke="#8884d8" />
-    
-  </LineChart>
+   <ComposedChart width={1500} height={700} data={chartdata} margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
+    <XAxis dataKey="time" tickCount={15}/>
+    <CartesianGrid stroke="#eee" strokeDasharray="10 10"/>
+    <YAxis tickCount={22} domain={type === "price" ? ['dataMin - 100', 'dataMax + 200'] : [0, 'dataMax + 0.01']}/>
+    {type === "price" ? 
+    (<Line type="monotone" dataKey="price" stroke="#8884d8" />)
+    : (<Bar type="monotone" barSize={20} dataKey="quantity" stroke="#8884d8" />)
+    }
+      
+  </ComposedChart>
   </div>
 }
 
